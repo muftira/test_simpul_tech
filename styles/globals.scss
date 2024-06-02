@@ -1,0 +1,99 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+//inbox
+@import "./components/inbox/inbox.scss";
+
+//task
+@import "./components/task/task.scss";
+
+//font
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+.home {
+  &-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #333333;
+  }
+
+  &-sidebar {
+    width: 20%;
+    height: 100vh;
+    background-color: #333333;
+    border-right: 1px solid white;
+  }
+
+  &-content {
+    width: 80%;
+    height: 100vh;
+    background-color: #333333;
+  }
+  &-search {
+    width: 70%;
+    height: 58px;
+    background-color: #333333;
+  }
+}
+
+#homeInput {
+  background-image: url("/search.svg");
+  background-position: 15px 18px;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 58px;
+  background-color: #4f4f4f;
+  // font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  // border: 1px solid #ddd;
+  // margin-bottom: 12px;
+}
+
+#checkboxTask {
+  width: 18px;
+  height: 18px;
+  align-self: center;
+}
+
+.font {
+  &-base {
+    font-family: "Lato", sans-serif;
+  }
+
+  &-font-12 {
+    font-family: "Lato", sans-serif;
+    font-size: 12px !important;
+  }
+
+  &-font-14 {
+    font-family: "Lato", sans-serif;
+    font-size: 14px !important;
+  }
+
+  &-font-16 {
+    font-family: "Lato", sans-serif;
+    font-size: 16px !important;
+  }
+
+  &-weight-400 {
+    font-weight: 400;
+  }
+
+  &-weight-500 {
+    font-weight: 500;
+  }
+
+  &-weight-600 {
+    font-weight: 600;
+  }
+
+  &-weight-700 {
+    font-weight: 700;
+  }
+
+  &-weight-800 {
+    font-weight: 800;
+  }
+}
