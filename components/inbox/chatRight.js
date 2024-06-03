@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-export default function chatRight() {
+export default function chatRight(props) {
+  const { id, userName, message, date, read, color } = props;
   const [showOption, setShowOption] = useState(false);
   return (
     <div style={{ marginBottom: "10px" }}>
       <div className="d-flex flex-column">
         <p
-          className="font-size-12 font-weight-600 mb-0 text-end"
+          className="font-base font-weight-600 mb-0 text-end"
           style={{ color: "#9B51E0" }}
         >
-          You
+          {userName}
         </p>
         <div className="d-flex flex-row justify-content-end">
           <div
@@ -29,7 +30,7 @@ export default function chatRight() {
                 }}
               >
                 <div
-                  className="font-size-12 w-100 h-100"
+                  className="font-base w-100 h-100"
                   style={{
                     color: "#2F80ED",
                     borderBottom: "1px solid #BDBDBD",
@@ -69,10 +70,10 @@ export default function chatRight() {
               borderRadius: "5px",
             }}
           >
-            <p style={{ marginBottom: "5px" }}>
-              No worries. It will be completed ASAP. I’ve asked him yesterday.
+            <p className="font-base" style={{ marginBottom: "5px" }}>
+             {message}
             </p>
-            <p className="mb-0">19:32</p>
+            <p  className="mb-0 font-size-12">{date}</p>
           </div>
         </div>
       </div>

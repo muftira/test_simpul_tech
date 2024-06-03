@@ -5,11 +5,13 @@ import { useRef, useState, useEffect } from "react";
 import ChatLeft from "./chatLeft";
 import ChatRight from "./chatRight";
 import LoadingChat from "./loadingChat";
+import { fetchData } from "../../utils/fetch";
 
 export default function chatRoom(props) {
-  const { setInboxPage, setExpandMenu, setSelectMenu } = props;
+  const { setInboxPage, setExpandMenu, setSelectMenu, room } = props;
   const [showNewMessage, setShowNewMessage] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [listChats, setListChats] = useState();
   const scrollRef = useRef(null);
 
   const scrollToPosition = () => {
@@ -22,7 +24,19 @@ export default function chatRoom(props) {
   };
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  const loadChat = async () => {
+    const response = await fetchData("GET", `chats?roomId=${room.id}`);
+    if (response.success) {
+      setLoading(false);
+      setListChats(response.data.data);
+    }
+  };
+
+  useEffect(() => {
+    loadChat();
   }, []);
 
   return (
@@ -31,7 +45,7 @@ export default function chatRoom(props) {
         className="d-flex align-content-center "
         style={{
           width: "100%",
-          height: "80px",
+          minHeight: "80px",
           borderBottom: "1px solid #828282",
           padding: "24px 32px 24px 32px",
         }}
@@ -45,15 +59,15 @@ export default function chatRoom(props) {
         <div className="h-100 d-flex flex-column justify-content-center ms-3">
           <p
             className="font-size-16 font-weight-600 mb-0"
-            style={{ color: "#2F80ED" }}
+            style={{ color: "#2F80ED", width: '610px' }}
           >
-            I-589 - AMARKHIL, Obaidullah [Affirmative Filing with ZHN]
+            {room.name}
           </p>
-          <p className="font-size-12 mb-0">3 Participants</p>
+          <p className="font-size-12 mb-0">{room.name === "FastVisa Support" ? "" : `${room.participants} Participants`}</p>
         </div>
         <div
           className="position-absolute"
-          style={{ right: "32px", cursor: 'pointer' }}
+          style={{ right: "32px", cursor: "pointer" }}
           onClick={() => {
             setExpandMenu(true), setSelectMenu("");
           }}
@@ -87,7 +101,7 @@ export default function chatRoom(props) {
             }}
           >
             <p
-              className="font-size-12 font-weight-600 mb-0 ms-2"
+              className="font-size-16 font-weight-600 mb-0 ms-2"
               style={{ color: "#2F80ED", alignSelf: "center" }}
             >
               New Message
@@ -96,8 +110,33 @@ export default function chatRoom(props) {
         )}
 
         {loading && <LoadingChat type="spin" color="#2F80ED" />}
-        <ChatLeft />
-        <ChatRight />
+        {listChats &&
+          listChats.map((item, index) => {
+            const { id, userName, message, date, read, color } = item;
+            return (
+              <>
+                {userName === "You" ? (
+                  <ChatRight
+                    id={id}
+                    message={message}
+                    userName={userName}
+                    date={date}
+                    read={read}
+                    color={color}
+                  />
+                ) : (
+                  <ChatLeft
+                    id={id}
+                    message={message}
+                    userName={userName}
+                    date={date}
+                    read={read}
+                    color={color}
+                  />
+                )}
+              </>
+            );
+          })}
       </div>
       <div
         className="d-flex w-100 justify-content-between "

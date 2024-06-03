@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-export default function chatLeft() {
+export default function chatLeft(props) {
+  const { id, userName, message, date, read, color } = props;
   const [showOption, setShowOption] = useState(false);
   return (
     <div style={{ marginBottom: "10px" }}>
       <div className="d-flex flex-column">
         <p
-          className="font-size-12 font-weight-600 mb-0"
-          style={{ color: "#E5A443" }}
+          className="font-base font-weight-600 mb-0"
+          style={{ color: color === 1 ?  "#E5A443" : color === 2 ? "#43B78D" : "#2F80ED" }}
         >
-          Marry Hilda
+          {userName}
         </p>
         <div className="d-flex flex-row justify-content-start">
           <div
@@ -17,14 +18,14 @@ export default function chatLeft() {
             style={{
               maxWidth: "518px",
               minHeight: "53.5px",
-              backgroundColor: "#FCEED3",
+              backgroundColor: color === 1 ? "#FCEED3" : color === 2 ? "#D2F2EA" : "#F8F8F8",
               borderRadius: "5px",
             }}
           >
-            <p style={{ marginBottom: "5px" }}>
-              Just Fill me in for his updates yea?
+            <p className="font-base" style={{ marginBottom: "5px" }}>
+              {message}
             </p>
-            <p className="mb-0">19:32</p>
+            <p className="mb-0 font-size-12">{date}</p>
           </div>
           <div
             className="position-relative"
