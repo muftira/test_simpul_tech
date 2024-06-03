@@ -1,17 +1,78 @@
 import React, { useEffect, useState } from "react";
+import { fetchData } from "../../utils/fetch";
 
 //components
 import Form from "react-bootstrap/Form";
 import Loading from "./loading";
 import ListTask from "../task/listTask";
-import NewTask from "../task/newTask";
 
 export default function main() {
   const [loading, setLoading] = useState(true);
+  const [sectionData, setSectionData] = useState();
+  const [selectSection, setSelectSection] = useState(1);
+  const [listTasks, setListTasks] = useState();
+
+  const loadsection = async () => {
+    const response = await fetchData("GET", "sectionTasks");
+
+    if (response.success) {
+      setLoading(false);
+      setSectionData(response.data.data);
+    }
+  };
+
+  const loadListTask = async () => {
+    const response = await fetchData(
+      "GET",
+      `listTasks?sectionTaskId=${selectSection}`
+    );
+
+    if (response.success) {
+      setLoading(false);
+      setListTasks(response.data.data);
+    }
+  };
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 2000);
+    loadsection();
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    loadListTask();
+  }, [selectSection]);
+
+  const handleAddTask = async () => {
+    const data = {
+      sectionTaskId: parseInt(selectSection),
+      checked: false,
+      title: "",
+      remainingDays: "",
+      date: "",
+      description: "",
+    };
+    const response = await fetchData("POST", "listTasks", data);
+
+    if (response.success) {
+      loadListTask();
+    }
+  };
+
+  const handleDeleteTask = async (id) => {
+    const response = await fetchData("DELETE", `listTasks/${id}`);
+
+    if (response.success) {
+      loadListTask();
+    }
+  };
+
+  const handleUpdateTask = async (id, data) => {
+    const response = await fetchData("PATCH", `listTasks/${id}`, data);
+    if (response.success) {
+      loadListTask();
+    }
+  }
+
   return (
     <div className="container-task">
       <div
@@ -19,12 +80,24 @@ export default function main() {
         style={{ height: "40px" }}
       >
         <Form.Select
-          className="font-size-12 font-weight-600"
-          style={{ width: "118.55px", height: "100%", border: '1px solid #4F4F4F', marginLeft: "80px" }}
+          className="font-size-14 font-weight-600"
+          style={{
+            width: "118.55px",
+            height: "100%",
+            border: "1px solid #4F4F4F",
+            marginLeft: "80px",
+          }}
+          value={selectSection}
+          onChange={(e) => setSelectSection(e.target.value)}
         >
-          <option value="Personal Errands">Personal Errands</option>
+          {sectionData &&
+            sectionData.map((item) => (
+              <option className="font-size-14 font-weight-600" value={item.id}>
+                {item.name}
+              </option>
+            ))}
         </Form.Select>
-        <div>
+        <div onClick={() => handleAddTask()}>
           <img style={{ cursor: "pointer" }} src="/new_task.svg" />
         </div>
       </div>
@@ -37,8 +110,17 @@ export default function main() {
             overflowY: "scroll",
           }}
         >
-          <ListTask/>
-          <NewTask/>
+          {listTasks &&
+            listTasks.map((item) => (
+              <ListTask
+                key={item.id}
+                item={item}
+                handleDeleteTask={handleDeleteTask}
+                handleUpdateTask={handleUpdateTask}
+              />
+            ))}
+
+          {/* <NewTask /> */}
         </div>
       )}
     </div>
