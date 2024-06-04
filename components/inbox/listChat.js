@@ -10,10 +10,6 @@ export default function listChat(porps) {
   const [listRooms, setListRooms] = useState(true);
   const [words, setWords] = useState("");
 
-  // useEffect(() => {
-  //   setTimeout(() => setLoading(false), 2000);
-  // }, [])
-
   const loadRooms = async () => {
     const response = await fetchData("GET", "rooms");
     if (response.success) {
@@ -38,16 +34,17 @@ export default function listChat(porps) {
     }
   };
 
-  // const handleUpdate = async (id, name, data) => {
-  //   const response = await fetchData("PATCH", `rooms/${id}`, data);
-  //   if (response.success) {
-  //     setRoom({
-  //       id,
-  //       name
-  //     });
-  //     setInboxPage(2);
-  //   }
-  // };
+  const handleUpdate = async (id, name, participants, data) => {
+    const response = await fetchData("PATCH", `rooms/${id}`, data);
+    if (response.success) {
+      setRoom({
+        id,
+        name,
+        participants,
+      });
+      setInboxPage(2);
+    }
+  };
 
   return (
     <div className="container-inbox">
@@ -64,7 +61,16 @@ export default function listChat(porps) {
       ) : (
         listRooms &&
         listRooms.map((item) => {
-          const { id, picture, name, date, userName, lastChat, read, participants } = item;
+          const {
+            id,
+            picture,
+            name,
+            date,
+            userName,
+            lastChat,
+            read,
+            participants,
+          } = item;
           return (
             <div
               className="w-100 d-flex flex-row position-relative "
@@ -73,10 +79,9 @@ export default function listChat(porps) {
                 padding: "22px 0px 22px 0px",
                 cursor: "pointer",
               }}
-              // onClick={() => handleUpdate(id, {read : true})}
-              onClick={() => {
-                setRoom({ id, name, participants }), setInboxPage(2);
-              }}
+              onClick={() =>
+                handleUpdate(id, name, participants, { read: true })
+              }
             >
               {!read && (
                 <div

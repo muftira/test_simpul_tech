@@ -1,10 +1,24 @@
 import { useState } from "react";
 
 export default function chatRight(props) {
-  const { id, userName, message, date, read, color } = props;
+  const {
+    id,
+    userName,
+    message,
+    date,
+    read,
+    color,
+    handleDeleteChat,
+    index,
+    handleEditChat,
+    room
+  } = props;
   const [showOption, setShowOption] = useState(false);
+  const [editText, setEditText] = useState(false);
+
   return (
     <div style={{ marginBottom: "10px" }}>
+      {!read && <img src="notif_new_message.svg" />}
       <div className="d-flex flex-column">
         <p
           className="font-base font-weight-600 mb-0 text-end"
@@ -20,7 +34,7 @@ export default function chatRight(props) {
           >
             {showOption && (
               <div
-                className="d-flex flex-column justify-content-center align-items-center mt-3 position-absolute"
+                className="d-flex flex-column justify-content-center align-items-center mt-3 position-absolute z-3"
                 style={{
                   width: "126px",
                   height: "80px",
@@ -37,6 +51,7 @@ export default function chatRight(props) {
                     cursor: "pointer",
                     padding: "10px 0px 0px 20px",
                   }}
+                  onClick={() => setEditText(true)}
                 >
                   Edit
                 </div>
@@ -47,6 +62,7 @@ export default function chatRight(props) {
                     cursor: "pointer",
                     padding: "5px 0px 0px 20px",
                   }}
+                  onClick={() => handleDeleteChat(id, room, index)}
                 >
                   Delete
                 </div>
@@ -62,18 +78,42 @@ export default function chatRight(props) {
             />
           </div>
           <div
-            className="d-flex flex-column align-items-end p-2"
+            className="d-flex flex-column align-items-start p-2 position-relative"
             style={{
               maxWidth: "518px",
+              minWidth: "127.85px",
               minHeight: "53.5px",
               backgroundColor: "#EEDCFF",
               borderRadius: "5px",
             }}
           >
-            <p className="font-base" style={{ marginBottom: "5px" }}>
-             {message}
-            </p>
-            <p  className="mb-0 font-size-12">{date}</p>
+            {editText ? (
+              <>
+                <textarea
+                  style={{
+                    width: "500px",
+                    minWidth: "127.85px",
+                    minHeight: "53.5px",
+                  }}
+                  value={message}
+                  onChange={(e) =>
+                    handleEditChat(id, e.target.value, room, index)
+                  }
+                />
+                <img
+                  className="position-absolute"
+                  style={{ marginTop: "5px", bottom: "5px", right: "10px", cursor: 'pointer' }}
+                  src="edit_pen_blue.svg"
+                  onClick={() => setEditText(false)}
+                />
+              </>
+            ) : (
+              <p className="font-base" style={{ marginBottom: "5px" }}>
+                {message}
+              </p>
+            )}
+
+            <p className="mb-0 font-size-12">{date}</p>
           </div>
         </div>
       </div>

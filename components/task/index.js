@@ -119,8 +119,6 @@ export default function main() {
                 handleUpdateTask={handleUpdateTask}
               />
             ))}
-
-          {/* <NewTask /> */}
         </div>
       )}
     </div>

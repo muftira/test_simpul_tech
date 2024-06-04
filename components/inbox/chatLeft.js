@@ -1,10 +1,12 @@
 import { useState } from "react";
 
 export default function chatLeft(props) {
-  const { id, userName, message, date, read, color } = props;
+  const { id, userName, message, date, read, color, index, room } = props;
   const [showOption, setShowOption] = useState(false);
   return (
     <div style={{ marginBottom: "10px" }}>
+      {index === 2  && (<img src="icon_date.svg"/>)}
+      {!read  && (<img src="notif_new_message.svg"/>)}
       <div className="d-flex flex-column">
         <p
           className="font-base font-weight-600 mb-0"
@@ -17,6 +19,7 @@ export default function chatLeft(props) {
             className="d-flex flex-column align-items-start p-2"
             style={{
               maxWidth: "518px",
+              minWidth: "127.85px",
               minHeight: "53.5px",
               backgroundColor: color === 1 ? "#FCEED3" : color === 2 ? "#D2F2EA" : "#F8F8F8",
               borderRadius: "5px",
@@ -32,7 +35,7 @@ export default function chatLeft(props) {
             onMouseEnter={() => setShowOption(true)}
             onMouseLeave={() => setShowOption(false)}
           >
-            {showOption && (
+            {/* {showOption && (
               <div
                 className="d-flex flex-column justify-content-center align-items-center mt-3 position-absolute"
                 style={{
@@ -54,7 +57,7 @@ export default function chatLeft(props) {
                   Delete
                 </div>
               </div>
-            )}
+            )} */}
             <img
               style={{
                 verticalAlign: "text-top",
