@@ -1,6 +1,9 @@
 import axios from "axios";
 
-// const base_url = "https://my-json-server.typicode.com/muftira/quicks/";
+
+
+// for local dummy data json-server, i suggest for use this after clone and install from github's link below:
+// https://github.com/muftira/dummy-api-quicks
 const base_url = "http://localhost:3000/";
 
 export async function fetchData(fetchType, const_api_url, objData) {
