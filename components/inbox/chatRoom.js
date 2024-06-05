@@ -211,7 +211,7 @@ export default function chatRoom(props) {
       >
         {showNewMessage && (
           <div
-            className="position-absolute d-flex z-3"
+            className="position-absolute d-flex z-1"
             style={{
               width: "142px",
               height: "40px",
@@ -280,7 +280,7 @@ export default function chatRoom(props) {
       <div className="position-relative">
         {isReply && (
           <div
-            className="d-flex flex-column position-absolute"
+            className="d-flex flex-column position-absolute z-3"
             style={{
               width: "580px",
               padding: "5px 15px",
