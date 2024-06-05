@@ -1,16 +1,30 @@
 import { useState } from "react";
 
 export default function chatLeft(props) {
-  const { id, userName, message, date, read, color, index, room } = props;
+  const {
+    id,
+    userName,
+    message,
+    date,
+    read,
+    color,
+    index,
+    room,
+    setIsReply,
+    setReplyText,
+  } = props;
   const [showOption, setShowOption] = useState(false);
   return (
     <div style={{ marginBottom: "10px" }}>
-      {index === 2  && (<img src="icon_date.svg"/>)}
-      {!read  && (<img src="notif_new_message.svg"/>)}
+      {index === 2 && <img src="icon_date.svg" />}
+      {!read && <img src="notif_new_message.svg" />}
       <div className="d-flex flex-column">
         <p
           className="font-base font-weight-600 mb-0"
-          style={{ color: color === 1 ?  "#E5A443" : color === 2 ? "#43B78D" : "#2F80ED" }}
+          style={{
+            color:
+              color === 1 ? "#E5A443" : color === 2 ? "#43B78D" : "#2F80ED",
+          }}
         >
           {userName}
         </p>
@@ -21,7 +35,8 @@ export default function chatLeft(props) {
               maxWidth: "518px",
               minWidth: "127.85px",
               minHeight: "53.5px",
-              backgroundColor: color === 1 ? "#FCEED3" : color === 2 ? "#D2F2EA" : "#F8F8F8",
+              backgroundColor:
+                color === 1 ? "#FCEED3" : color === 2 ? "#D2F2EA" : "#F8F8F8",
               borderRadius: "5px",
             }}
           >
@@ -35,12 +50,12 @@ export default function chatLeft(props) {
             onMouseEnter={() => setShowOption(true)}
             onMouseLeave={() => setShowOption(false)}
           >
-            {/* {showOption && (
+            {showOption && (
               <div
                 className="d-flex flex-column justify-content-center align-items-center mt-3 position-absolute"
                 style={{
                   width: "126px",
-                  height: "40px",
+                  height: "80px",
                   backgroundColor: "#FFFFFF",
                   border: "1px solid #BDBDBD",
                   borderRadius: "5px",
@@ -49,15 +64,29 @@ export default function chatLeft(props) {
                 <div
                   className="font-base w-100 h-100"
                   style={{
-                    color: "#EB5757",
+                    color: "#2F80ED",
                     cursor: "pointer",
+                    borderBottom: "1px solid #BDBDBD",
                     padding: "5px 0px 0px 20px",
                   }}
                 >
-                  Delete
+                  Share
+                </div>
+                <div
+                  className="font-base w-100 h-100"
+                  style={{
+                    color: "#2F80ED",
+                    cursor: "pointer",
+                    padding: "5px 0px 0px 20px",
+                  }}
+                  onClick={() => {
+                    setIsReply(true), setReplyText({userName, message}, setShowOption(false));
+                  }}
+                >
+                  Reply
                 </div>
               </div>
-            )} */}
+            )}
             <img
               style={{
                 verticalAlign: "text-top",

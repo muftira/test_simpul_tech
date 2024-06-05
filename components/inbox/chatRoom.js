@@ -13,6 +13,8 @@ export default function chatRoom(props) {
   const [loading, setLoading] = useState(true);
   const [listChats, setListChats] = useState();
   const [inputText, setInputText] = useState("");
+  const [isReply, setIsReply] = useState(false);
+  const [replyText, setReplyText] = useState({ userName: "", message: "" });
   const scrollRef = useRef(null);
 
   const scrollToPosition = () => {
@@ -45,7 +47,7 @@ export default function chatRoom(props) {
     loadChat();
   }, []);
 
-  const handleSendChat = async () => {
+  const handleSendChat = async (value) => {
     if (inputText.length > 0) {
       const data = {
         roomId: room.id,
@@ -54,6 +56,7 @@ export default function chatRoom(props) {
         date: "19:32",
         read: true,
         color: "",
+        reply: value?.message ? value.message : "" ,
       };
 
       const chats = listChats.find((item) => item.read == false);
@@ -70,7 +73,7 @@ export default function chatRoom(props) {
           userName: "You",
           lastChat: inputText,
         });
-
+        setIsReply(false);
         loadChat();
         setInputText("");
       }
@@ -80,18 +83,18 @@ export default function chatRoom(props) {
   const handleDeleteChat = async (id, room, index) => {
     const response = await fetchData("DELETE", `chats/${id}`);
     if (response.success) {
-      if(index + 1 === listChats.length){
-        const data = listChats[index - 1]
+      if (index + 1 === listChats.length) {
+        const data = listChats[index - 1];
         const response = await fetchData("PATCH", `rooms/${room.id}`, {
           userName: data.userName,
-          lastChat: data.message
+          lastChat: data.message,
         });
         loadChat();
-      }else{
-        const data = listChats[listChats.length - 1]
+      } else {
+        const data = listChats[listChats.length - 1];
         const response = await fetchData("PATCH", `rooms/${room.id}`, {
           userName: data.userName,
-          lastChat: data.message
+          lastChat: data.message,
         });
         loadChat();
       }
@@ -118,15 +121,15 @@ export default function chatRoom(props) {
           lastChat: value,
         });
         loadChat();
-      }else{
-        const data = listChats[listChats.length - 1]
+      } else {
+        const data = listChats[listChats.length - 1];
         const response = await fetchData("PATCH", `rooms/${room.id}`, {
           userName: data.userName,
           lastChat: data.message,
         });
         loadChat();
       }
-      }
+    }
   };
 
   useEffect(() => {
@@ -239,7 +242,7 @@ export default function chatRoom(props) {
         )}
         {listChats &&
           listChats.map((item, index) => {
-            const { id, userName, message, date, read, color } = item;
+            const { id, userName, message, date, read, color, reply } = item;
             return (
               <div>
                 {userName === "You" ? (
@@ -254,6 +257,7 @@ export default function chatRoom(props) {
                     index={index}
                     handleEditChat={handleEditChat}
                     room={room}
+                    reply={reply}
                   />
                 ) : (
                   <ChatLeft
@@ -265,32 +269,71 @@ export default function chatRoom(props) {
                     color={color}
                     index={index}
                     room={room}
+                    setIsReply={setIsReply}
+                    setReplyText={setReplyText}
                   />
                 )}
               </div>
             );
           })}
       </div>
-      <div
-        className="d-flex w-100 justify-content-between "
-        style={{
-          width: "100%",
-          height: "80px",
-          padding: "10px 32px 24px 32px",
-        }}
-      >
-        <input
-          type="text"
-          id="typeMessage"
-          placeholder="Type a new message"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-        />
-        <img
-          style={{ width: "76px", height: "40px", cursor: "pointer" }}
-          src="/send.svg"
-          onClick={() => handleSendChat()}
-        />
+      <div className="position-relative">
+        {isReply && (
+          <div
+            className="d-flex flex-column position-absolute"
+            style={{
+              width: "580px",
+              padding: "5px 15px",
+              backgroundColor: "#F2F2F2",
+              border: "1px solid #4F4F4F",
+              borderRadius: "5px 5px 0px 0px",
+              bottom: "66px",
+              left: "32px",
+            }}
+          >
+            <div className="d-flex justify-content-between">
+              <p
+                className=" font-base font-weight-600 mb-0"
+                style={{ color: "#4F4F4F" }}
+              >{`Replying to ${replyText.userName}`}</p>
+              <img
+                style={{
+                  height: "12px",
+                  alignSelf: "center",
+                  cursor: "pointer",
+                }}
+                src="close.svg"
+                onClick={() => [
+                  setIsReply(false),
+                  setReplyText({ userName: "", message: "" }),
+                ]}
+              />
+            </div>
+            <p className="font-base mb-0">{replyText.message}</p>
+          </div>
+        )}
+
+        <div
+          className="d-flex w-100 justify-content-between "
+          style={{
+            width: "100%",
+            height: "80px",
+            padding: "10px 32px 24px 32px",
+          }}
+        >
+          <input
+            type="text"
+            id="typeMessage"
+            placeholder="Type a new message"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+          <img
+            style={{ width: "76px", height: "40px", cursor: "pointer" }}
+            src="/send.svg"
+            onClick={() => handleSendChat(replyText)}
+          />
+        </div>
       </div>
     </div>
   );
