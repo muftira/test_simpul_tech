@@ -73,6 +73,7 @@ export default function listChat(porps) {
           } = item;
           return (
             <div
+              key={{ id }}
               className="w-100 d-flex flex-row position-relative "
               style={{
                 borderBottom: "1px solid #828282",

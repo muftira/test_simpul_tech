@@ -56,7 +56,7 @@ export default function chatRoom(props) {
         date: "19:32",
         read: true,
         color: "",
-        reply: value?.message ? value.message : "" ,
+        reply: value?.message ? value.message : "",
       };
 
       const chats = listChats.find((item) => item.read == false);
@@ -244,7 +244,7 @@ export default function chatRoom(props) {
           listChats.map((item, index) => {
             const { id, userName, message, date, read, color, reply } = item;
             return (
-              <div>
+              <div key={id}>
                 {userName === "You" ? (
                   <ChatRight
                     id={id}

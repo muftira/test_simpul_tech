@@ -50,7 +50,7 @@ export default function main() {
       remainingDays: "",
       date: "",
       description: "",
-      notes: []
+      notes: [],
     };
     const response = await fetchData("POST", "listTasks", data);
 
@@ -72,7 +72,7 @@ export default function main() {
     if (response.success) {
       loadListTask();
     }
-  }
+  };
 
   const handleSelectNotes = async (id, value, key) => {
     // if(key.length === 0){
@@ -89,21 +89,24 @@ export default function main() {
     //   }
     // }
 
-    if(key.length === 1) {
-      let data = key
-      data.push(value)
-      const response = await fetchData("PATCH", `listTasks/${id}`, {notes: data});
+    if (key.length === 1) {
+      let data = key;
+      data.push(value);
+      const response = await fetchData("PATCH", `listTasks/${id}`, {
+        notes: data,
+      });
       if (response.success) {
         loadListTask();
       }
-    }else{
-      const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
+    } else {
+      const response = await fetchData("PATCH", `listTasks/${id}`, {
+        notes: [value],
+      });
       if (response.success) {
         loadListTask();
       }
     }
-
-  }
+  };
 
   return (
     <div className="container-task">
@@ -124,7 +127,11 @@ export default function main() {
         >
           {sectionData &&
             sectionData.map((item) => (
-              <option className="font-size-14 font-weight-600" value={item.id}>
+              <option
+                key={item.id}
+                className="font-size-14 font-weight-600"
+                value={item.id}
+              >
                 {item.name}
               </option>
             ))}

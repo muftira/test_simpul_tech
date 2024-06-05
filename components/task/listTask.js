@@ -2,16 +2,8 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 
 export default function listTask(props) {
-  const { item, handleDeleteTask, handleUpdateTask, handleSelectNotes, } = props;
-  const {
-    id,
-    checked,
-    title,
-    remainingDays,
-    date,
-    description,
-    notes,
-  } = item;
+  const { item, handleDeleteTask, handleUpdateTask, handleSelectNotes } = props;
+  const { id, checked, title, remainingDays, date, description, notes } = item;
   const [expand, setExpand] = useState(!checked);
   const [showOption, setShowOption] = useState(false);
   const [shownotes, setShowNotes] = useState(false);
@@ -297,10 +289,11 @@ export default function listTask(props) {
                   }}
                   onMouseLeave={() => setShowNotes(false)}
                 >
-                  {listNotes.map((item) => {
+                  {listNotes.map((item, index) => {
                     const { value, label } = item;
                     return (
                       <div
+                        key={index}
                         className="d-flex align-content-center ps-3"
                         style={{
                           width: "246px",
@@ -309,7 +302,9 @@ export default function listTask(props) {
                           borderRadius: "5px",
                           marginBottom: "9px",
                           cursor: "pointer",
-                          border: notes.includes(value) ? "1.5px solid #2F80ED" : "0px solid #2F80ED"
+                          border: notes.includes(value)
+                            ? "1.5px solid #2F80ED"
+                            : "0px solid #2F80ED",
                         }}
                         onClick={() => handleSelectNotes(id, value, notes)}
                       >
@@ -335,8 +330,9 @@ export default function listTask(props) {
                 src={notes.length > 0 ? "notes_blue.svg" : "notes_black.svg"}
               />
             </div>
-            {notes.map((item) => (
+            {notes.map((item, index) => (
               <div
+                key={index}
                 className="d-flex justify-content-center align-content-center me-2"
                 style={{
                   width: "122.45px",
