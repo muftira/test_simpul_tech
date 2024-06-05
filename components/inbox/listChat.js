@@ -56,6 +56,7 @@ export default function listChat(porps) {
           handleSearch(e.target.value, "input"), setWords(e.target.value);
         }}
       />
+      <div className="w-100" style={{height: '95%',overflowY: 'scroll'}}>
       {loading ? (
         <Loading type="spin" color="#C4C4C4" />
       ) : (
@@ -126,6 +127,7 @@ export default function listChat(porps) {
           );
         })
       )}
+      </div>
     </div>
   );
 }

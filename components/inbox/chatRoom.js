@@ -204,21 +204,21 @@ export default function chatRoom(props) {
       <div
         ref={scrollRef}
         style={{
-          height: "calc(737px - 160px)",
+          height: "calc(100vh - 160px)",
           overflowY: "scroll",
           padding: "24px 32px 24px 32px",
         }}
       >
         {showNewMessage && (
           <div
-            className="position-absolute d-flex"
+            className="position-absolute d-flex z-3"
             style={{
               width: "142px",
               height: "40px",
               color: "#E9F3FF",
               borderRadius: "5px",
               backgroundColor: "#E9F3FF",
-              top: "84%",
+              top: "78.5%",
               left: "37%",
               cursor: "pointer",
             }}

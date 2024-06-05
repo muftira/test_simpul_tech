@@ -9,7 +9,7 @@ const Loading = ({ type, color }) => (
       height: "54.41px",
       backgroundColor: "#E9F3FF",
       borderRadius: "5px",
-      top: "82%",
+      top: "75%",
       left: "4%",
     }}
   >

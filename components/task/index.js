@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchData } from "../../utils/fetch";
 
 //components
@@ -11,6 +11,18 @@ export default function main() {
   const [sectionData, setSectionData] = useState();
   const [selectSection, setSelectSection] = useState(1);
   const [listTasks, setListTasks] = useState();
+  const scrollRef = useRef(null);
+
+
+  const scrollToPosition = () => {
+    if (scrollRef.current) {
+      const { scrollHeight } = scrollRef.current
+      scrollRef.current.scrollTo({
+        top: scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const loadsection = async () => {
     const response = await fetchData("GET", "sectionTasks");
@@ -28,6 +40,7 @@ export default function main() {
     );
 
     if (response.success) {
+      scrollToPosition()
       setLoading(false);
       setListTasks(response.data.data);
     }
@@ -108,11 +121,16 @@ export default function main() {
     }
   };
 
+  useEffect(() => {
+    scrollToPosition()
+  }, [listTasks])
+
+
   return (
     <div className="container-task">
       <div
         className="w-100 d-flex justify-content-between"
-        style={{ height: "40px" }}
+        style={{ height: "40px", marginBottom: '24px' }}
       >
         <Form.Select
           className="font-size-14 font-weight-600"
@@ -144,8 +162,9 @@ export default function main() {
         <Loading type="spin" color="#C4C4C4" />
       ) : (
         <div
+          ref={scrollRef}
           style={{
-            height: "calc(737px - 120px)",
+            height: "calc(70vh - 120px)",
             overflowY: "scroll",
           }}
         >
