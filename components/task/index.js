@@ -40,7 +40,6 @@ export default function main() {
     );
 
     if (response.success) {
-      scrollToPosition()
       setLoading(false);
       setListTasks(response.data.data);
     }
@@ -88,19 +87,6 @@ export default function main() {
   };
 
   const handleSelectNotes = async (id, value, key) => {
-    // if(key.length === 0){
-    //   const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
-    //   if (response.success) {
-    //     loadListTask();
-    //   }
-    // }
-
-    // if(key.length === 2) {
-    //   const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
-    //   if (response.success) {
-    //     loadListTask();
-    //   }
-    // }
 
     if (key.length === 1) {
       let data = key;
@@ -123,7 +109,7 @@ export default function main() {
 
   useEffect(() => {
     scrollToPosition()
-  }, [listTasks])
+  }, [listTasks?.length])
 
 
   return (
