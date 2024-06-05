@@ -50,6 +50,7 @@ export default function main() {
       remainingDays: "",
       date: "",
       description: "",
+      notes: []
     };
     const response = await fetchData("POST", "listTasks", data);
 
@@ -71,6 +72,37 @@ export default function main() {
     if (response.success) {
       loadListTask();
     }
+  }
+
+  const handleSelectNotes = async (id, value, key) => {
+    // if(key.length === 0){
+    //   const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
+    //   if (response.success) {
+    //     loadListTask();
+    //   }
+    // }
+
+    // if(key.length === 2) {
+    //   const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
+    //   if (response.success) {
+    //     loadListTask();
+    //   }
+    // }
+
+    if(key.length === 1) {
+      let data = key
+      data.push(value)
+      const response = await fetchData("PATCH", `listTasks/${id}`, {notes: data});
+      if (response.success) {
+        loadListTask();
+      }
+    }else{
+      const response = await fetchData("PATCH", `listTasks/${id}`, {notes: [value]});
+      if (response.success) {
+        loadListTask();
+      }
+    }
+
   }
 
   return (
@@ -117,6 +149,7 @@ export default function main() {
                 item={item}
                 handleDeleteTask={handleDeleteTask}
                 handleUpdateTask={handleUpdateTask}
+                handleSelectNotes={handleSelectNotes}
               />
             ))}
         </div>

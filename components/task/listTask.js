@@ -2,10 +2,19 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 
 export default function listTask(props) {
-  const { item, handleDeleteTask, handleUpdateTask } = props;
-  const { id, checked, title, remainingDays, date, description } = item;
+  const { item, handleDeleteTask, handleUpdateTask, handleSelectNotes, } = props;
+  const {
+    id,
+    checked,
+    title,
+    remainingDays,
+    date,
+    description,
+    notes,
+  } = item;
   const [expand, setExpand] = useState(!checked);
   const [showOption, setShowOption] = useState(false);
+  const [shownotes, setShowNotes] = useState(false);
   const [editTilte, setEdittitle] = useState(false);
   const [editDescription, setEditDescription] = useState(false);
 
@@ -37,6 +46,88 @@ export default function listTask(props) {
   useEffect(() => {
     if (title) setEdittitle(true);
   }, [editTilte]);
+
+  const listNotes = [
+    {
+      value: 1,
+      label: "Important ASAP",
+    },
+    {
+      value: 2,
+      label: "Offline Meeting",
+    },
+    {
+      value: 3,
+      label: "Virtual Meeting",
+    },
+    {
+      value: 4,
+      label: "ASAP",
+    },
+    {
+      value: 5,
+      label: "Client Related",
+    },
+    {
+      value: 6,
+      label: "Self Task",
+    },
+    {
+      value: 7,
+      label: "Appointments",
+    },
+    {
+      value: 8,
+      label: "Court Related",
+    },
+  ];
+
+  const notesColor = (value) => {
+    switch (value) {
+      case 1:
+        return {
+          color: "#E5F1FF",
+          label: "Important ASAP",
+        };
+      case 2:
+        return {
+          color: "#FDCFA4",
+          label: "Offline Meeting",
+        };
+      case 3:
+        return {
+          color: "#F9E9C3",
+          label: "Virtual Meeting",
+        };
+      case 4:
+        return {
+          color: "#AFEBDB",
+          label: "ASAP",
+        };
+      case 5:
+        return {
+          color: "#CBF1C2",
+          label: "Client Related",
+        };
+      case 6:
+        return {
+          color: "#CFCEF9",
+          label: "Self Task",
+        };
+      case 7:
+        return {
+          color: "#F9E0FD",
+          label: "Appointments",
+        };
+      case 8:
+        return {
+          color: "#9DD0ED",
+          label: "Court Related",
+        };
+      default:
+        return;
+    }
+  };
 
   return (
     <div
@@ -138,7 +229,7 @@ export default function listTask(props) {
         <>
           <div className="d-flex flex-row mt-2">
             <img
-              style={{ marginLeft: "32px"}}
+              style={{ marginLeft: "32px" }}
               src={date ? "date_picker_blue.svg" : "date_picker_black.svg"}
             />
             <input
@@ -147,7 +238,7 @@ export default function listTask(props) {
                 borderRadius: "5px",
                 border: "1px solid #BDBDBD",
                 padding: "5px 15px",
-                cursor: "pointer" 
+                cursor: "pointer",
               }}
               className="ms-4 "
               type="date"
@@ -189,6 +280,79 @@ export default function listTask(props) {
                 {description ? description : "No Description"}
               </p>
             )}
+          </div>
+          <div className="d-flex flex-row mt-2 position-relative">
+            <div onClick={() => setShowNotes(!shownotes)}>
+              {shownotes && (
+                <div
+                  className="position-absolute p-3 z-3"
+                  style={{
+                    width: "277px",
+                    height: "323px",
+                    borderRadius: "5px",
+                    border: "1px solid #4F4F4F",
+                    backgroundColor: "#FFFFFF",
+                    top: "40px",
+                    left: "35px",
+                  }}
+                  onMouseLeave={() => setShowNotes(false)}
+                >
+                  {listNotes.map((item) => {
+                    const { value, label } = item;
+                    return (
+                      <div
+                        className="d-flex align-content-center ps-3"
+                        style={{
+                          width: "246px",
+                          height: "28px",
+                          backgroundColor: notesColor(value).color,
+                          borderRadius: "5px",
+                          marginBottom: "9px",
+                          cursor: "pointer",
+                          border: notes.includes(value) ? "1.5px solid #2F80ED" : "0px solid #2F80ED"
+                        }}
+                        onClick={() => handleSelectNotes(id, value, notes)}
+                      >
+                        <p
+                          className="font-size-14 font-weight-600 mb-0"
+                          style={{ alignSelf: "center" }}
+                        >
+                          {label}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              <img
+                style={{
+                  marginLeft: "32px",
+                  alignSelf: "self-start",
+                  marginTop: "3px",
+                  cursor: "pointer",
+                  marginRight: "25px",
+                }}
+                src={notes.length > 0 ? "notes_blue.svg" : "notes_black.svg"}
+              />
+            </div>
+            {notes.map((item) => (
+              <div
+                className="d-flex justify-content-center align-content-center me-2"
+                style={{
+                  width: "122.45px",
+                  height: "28.91px",
+                  backgroundColor: notesColor(item).color,
+                  borderRadius: "5px",
+                }}
+              >
+                <p
+                  className="font-size-14 font-weight-600 mb-0"
+                  style={{ alignSelf: "center" }}
+                >
+                  {notesColor(item).label}
+                </p>
+              </div>
+            ))}
           </div>
         </>
       )}
